@@ -132,11 +132,27 @@ return [
             'text' => 'search',
             'search' => true,
         ],
-        ['header' => 'MENU'],
+        // ['header' => 'MENU'],
         [
-            'text'        => 'Home',
+            'text'        => 'Dashboard',
             'url'         => 'admin',
-            'icon'        => 'fas fa-home',
+            'icon'        => 'fas fa-tachometer-alt',
+        ],
+        [
+            'text'        => 'Financeiro',
+            'icon'        => 'fas fa-money-bill-wave',
+            'submenu' => [
+               [
+                   'text' => 'Saldo',
+                   'url'  => 'admin/balance',
+                   'icon' => 'far fa-credit-card'
+               ],
+               [
+                'text' => 'Histórico',
+                'url'  => 'admin/historic',
+                'icon' => 'fas fa-history'
+               ],
+            ],
         ],
     ],
 
