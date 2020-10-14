@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'image'
     ];
 
     /**
@@ -42,8 +42,8 @@ class User extends Authenticatable
     public function getSender($sender)
     {
         return $this->where('name', 'LIKE', "%$sender%")
-                ->orWhere('email', $sender)
-                ->get()
-                ->first();
+                    ->orWhere('email', $sender)
+                    ->get()
+                    ->first();
     }
 }

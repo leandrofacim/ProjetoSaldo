@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MoneyValidationFormRequest;
+use App\Models\Historic;
 use App\User;
 use Illuminate\Http\Request;
-use PHPUnit\Framework\MockObject\Stub\ReturnReference;
-
 class BalanceController extends Controller
 {
+    private $totalPage = 2;
+
     public function index()
     {
         $balance = auth()->user()->balance;
@@ -34,7 +35,6 @@ class BalanceController extends Controller
                         ->route('admin.balance')
                         ->with('success', $response['message']);
         
-                    
                         
         return redirect()
                     ->back()
@@ -56,7 +56,6 @@ class BalanceController extends Controller
                         ->route('admin.balance')
                         ->with('success', $response['message']);
         
-
         return redirect()
                     ->back()
                     ->with('error', $response['message']);
@@ -102,5 +101,28 @@ class BalanceController extends Controller
         return redirect()
                     ->back()
                     ->with('error', $response['message']);
+    }
+
+    public function historic(Historic $historic)
+    {
+        $historics = auth()->user()
+            ->historics()
+            ->with(['userSender'])
+            ->paginate($this->totalPage);
+
+        $types = $historic->type();
+        
+        return view('admin.balance.historics', compact('historics', 'types'));
+    }
+
+    public function searchHistoric(Request $request, Historic $historic)
+    {
+        $dataForm = $request->except('_token');
+        
+        $historics = $historic->search($dataForm, $this->totalPage);
+
+        $types = $historic->type();
+
+        return view('admin.balance.historics', compact('historics', 'types', 'dataForm'));
     }
 }
